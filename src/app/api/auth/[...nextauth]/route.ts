@@ -8,12 +8,35 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: "openid profile email https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/meetings",
+          access_type: "offline", // Ensures we receive a refresh token
+          prompt: "consent", // Forces re-consent if permissions are missing
+        },
+      },
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt", // Explicitly type as 'jwt' instead of a generic string
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token ?? "";
+        token.refreshToken = account.refresh_token ?? "";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        accessToken: typeof token.accessToken === "string" ? token.accessToken : "",
+        refreshToken: typeof token.refreshToken === "string" ? token.refreshToken : "",
+      };
+    },
   },
 };
 
