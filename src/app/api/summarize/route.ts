@@ -11,7 +11,7 @@ const openai = new OpenAI({
 
 // ✅ MongoDB connection
 const client = new MongoClient(process.env.MONGODB_URI!);
-const db = client.db("meeting-notes-ai");
+const db = client.db("proscribe");
 const summariesCollection = db.collection("summaries");
 
 export async function POST(req: Request) {

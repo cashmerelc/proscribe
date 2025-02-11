@@ -4,7 +4,7 @@ import { MongoClient } from "mongodb";
 
 // ✅ MongoDB connection
 const client = new MongoClient(process.env.MONGODB_URI!);
-const db = client.db("meeting-notes-ai");
+const db = client.db("proscribe");
 const transcriptionsCollection = db.collection("transcripts");
 
 export async function GET(req: Request) {

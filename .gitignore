@@ -42,3 +42,8 @@ next-env.d.ts
 
 firebase-admin.json
 service-account.json
+auth.js
+credentials.json
+joinMeet.*
+token.json
+/src/scripts/*
